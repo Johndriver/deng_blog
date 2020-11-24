@@ -1,0 +1,31 @@
+
+body{
+    background-color: #efefef;
+}
+.main{
+    background-color: white;
+    margin: 30px;
+}
+.btn-publish{
+    float: right;
+    margin-bottom: 15px;
+}
+.media-object{
+    width: 65px;
+    height: 65px;
+}
+.text_desc{
+    font-size: 12px;
+    font-weight: normal;
+    color:#999;
+}
+.profile{
+    margin-top: 19px;
+}
+.deng-menu{
+    font-size: 14px;
+    color: #999;
+}
+.deng-bottom_div{
+    margin-bottom: 14px;
+}
