@@ -29,3 +29,27 @@ body{
 .deng-bottom_div{
     margin-bottom: 14px;
 }
+.comment{
+    margin: 10px 0;
+}
+.comments{
+    margin-bottom: 15px;
+    border-bottom: solid 1px #efdddd;
+}
+.btn-comment{
+    float: right;
+    margin-bottom: 10px;
+}
+
+.menu{
+    color: #999;
+    margin-top:5px;
+}
+.menu .icon{
+    margin-right: 10px;
+    font-size: 15px;
+    cursor:pointer;
+}
+.menu .icon:hover{
+    color: #499ef3;
+}

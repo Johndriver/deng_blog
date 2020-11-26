@@ -1,8 +1,9 @@
 package com.just.controller;
 
-import com.just.mapper.QuestionMapper;
+import com.just.dto.QuestionDTO;
 import com.just.model.Question;
 import com.just.model.User;
+import com.just.sevice.QuestionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,9 +17,16 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class PublishController {
     @Resource
-    private QuestionMapper questionMapper;
+    private QuestionService questionService;
     @GetMapping("/publish/{id}")
-    public String edit(@PathVariable("id") String id){
+    public String edit(@PathVariable("id") Long id,
+                       Model model){
+        //问题回显
+        QuestionDTO question = questionService.getById(id);
+        model.addAttribute("title",question.getTitle());
+        model.addAttribute("description",question.getDescription());
+        model.addAttribute("tag",question.getTag());
+        model.addAttribute("id",question.getId());
         return "publish";
     }
     @GetMapping("/publish")
@@ -32,7 +40,9 @@ public class PublishController {
             Model model,
             @RequestParam("title") String title,
             @RequestParam("description") String description,
-            @RequestParam("tag") String tag){
+            @RequestParam("tag") String tag,
+            @RequestParam(value = "id",required = false) Long id
+    ){
         model.addAttribute("title",title);
         model.addAttribute("description",description);
         model.addAttribute("tag",tag);
@@ -61,7 +71,8 @@ public class PublishController {
         question.setCreator(user.getId());
         question.setGmtCreate(now);
         question.setGmtModified(now);
-        questionMapper.create(question);
+        question.setId(id);
+        questionService.createOrUpdate(question);
         return "redirect:/";
     }
 

@@ -2,9 +2,11 @@ package com.just.sevice;
 
 import com.just.mapper.UserMapper;
 import com.just.model.User;
+import com.just.model.UserExample;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -13,20 +15,26 @@ public class UserService {
 
 
     public void createOrUpdate(User user) {
-        User dbUser = userMapper.findByAcountId(user.getAccountId());
+        UserExample example = new UserExample();
+        example.createCriteria().andAccountIdEqualTo(user.getAccountId());
+        List<User> users = userMapper.selectByExample(example);
         long now = System.currentTimeMillis();
-        if (dbUser == null) {
+        if (users.size()==0) {
             //插入
             user.setGmtCreate(now);
             user.setGmtModified(now);
             userMapper.insert(user);
         }else {
             //更新
-            dbUser.setGmtModified(now);
-            dbUser.setToken(user.getToken());
-            dbUser.setName(user.getName());
-            dbUser.setAvatarUrl(user.getAvatarUrl());
-            userMapper.update(dbUser);
+            User dbUser=users.get(0);
+            User updateUser = new User();
+            updateUser.setGmtModified(now);
+            updateUser.setToken(user.getToken());
+            updateUser.setName(user.getName());
+            updateUser.setAvatarUrl(user.getAvatarUrl());
+            UserExample userExample = new UserExample();
+            userExample.createCriteria().andIdEqualTo(dbUser.getId());
+            userMapper.updateByExampleSelective(updateUser, userExample);
         }
     }
 }
