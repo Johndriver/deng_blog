@@ -4,10 +4,7 @@ import com.just.dto.CommentDTO;
 import com.just.enums.CommentTypeEnum;
 import com.just.exception.CustomizeErrorCode;
 import com.just.exception.CustomizeException;
-import com.just.mapper.CommentMapper;
-import com.just.mapper.QuestionExtMapper;
-import com.just.mapper.QuestionMapper;
-import com.just.mapper.UserMapper;
+import com.just.mapper.*;
 import com.just.model.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -30,6 +27,8 @@ public class CommentService {
     private QuestionExtMapper questionExtMapper;
     @Resource
     private UserMapper userMapper;
+    @Resource
+    private CommentExtMapper commentExtMapper;
 
     public List<CommentDTO> listByTargetId(Long id, CommentTypeEnum type) {
         CommentExample commentExample = new CommentExample();
@@ -82,6 +81,11 @@ public class CommentService {
                 throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FOUNT);
             }
             commentMapper.insert(comment);
+            //增加主评论的评论数。
+            Comment parentComment = new Comment();
+            parentComment.setId(comment.getParentId());
+            parentComment.setCommentCount(1);
+            commentExtMapper.incCommentCount(parentComment);
         }else{
             //回复问题
             Question question = questionMapper.selectByPrimaryKey(comment.getParentId());

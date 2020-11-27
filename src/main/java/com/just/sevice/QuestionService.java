@@ -43,11 +43,12 @@ public class QuestionService {
             page=paginationDTO.getTotalPage();
         }
         Integer offSize = size*(page-1);
-        List<Question> questions = questionMapper.selectByExampleWithBLOBsWithRowbounds(new QuestionExample(), new RowBounds(offSize, size));
+        QuestionExample questionExample= new QuestionExample();
+        questionExample.setOrderByClause("gmt_create desc");
+        List<Question> questions = questionMapper.selectByExampleWithBLOBsWithRowbounds(questionExample, new RowBounds(offSize, size));
         List<QuestionDTO> list=new ArrayList<>();
 
         for (Question question : questions) {
-
             User user = userMapper.selectByPrimaryKey(question.getCreator());
             QuestionDTO questionDTO = new QuestionDTO();
             //属性值对拷
@@ -148,11 +149,14 @@ public class QuestionService {
         question.setTag(regexpTag);
 
         List<Question> questions = questionExtMapper.selectRelated(question);
-        List<QuestionDTO> questionDTOS = questions.stream().map(q -> {
-            QuestionDTO questionDTO = new QuestionDTO();
-            BeanUtils.copyProperties(q, questionDTO);
-            return questionDTO;
-        }).collect(Collectors.toList());
+        List<QuestionDTO> questionDTOS = questions
+                .stream()
+                .map(q -> {
+                            QuestionDTO questionDTO = new QuestionDTO();
+                            BeanUtils.copyProperties(q, questionDTO);
+                            return questionDTO;
+                        })
+                .collect(Collectors.toList());
         return questionDTOS;
     }
 }

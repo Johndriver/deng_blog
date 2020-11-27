@@ -2,19 +2,18 @@ package com.just.controller;
 
 import com.just.dto.CommentDTO;
 import com.just.dto.ResultDTO;
+import com.just.enums.CommentTypeEnum;
 import com.just.exception.CustomizeErrorCode;
 import com.just.model.Comment;
 import com.just.model.User;
 import com.just.sevice.CommentService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 public class CommentController {
@@ -42,5 +41,11 @@ public class CommentController {
         comment.setGmtModified(now);
         commentService.insert(comment);
         return ResultDTO.okOf();
+    }
+    @ResponseBody
+    @RequestMapping(value = "/comment/{id}",method = RequestMethod.GET)
+    public ResultDTO<List<CommentDTO>> comments(@PathVariable("id") Long id){
+        List<CommentDTO> commentDTOS = commentService.listByTargetId(id, CommentTypeEnum.COMMENT);
+        return ResultDTO.okOf(commentDTOS);
     }
 }

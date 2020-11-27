@@ -51,4 +51,5 @@
         <table tableName="comment"></table>
 
     </context>
+
 </generatorConfiguration>

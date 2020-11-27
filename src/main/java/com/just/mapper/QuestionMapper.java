@@ -2,10 +2,9 @@ package com.just.mapper;
 
 import com.just.model.Question;
 import com.just.model.QuestionExample;
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
-
-import java.util.List;
 
 public interface QuestionMapper {
     long countByExample(QuestionExample example);

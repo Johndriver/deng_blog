@@ -29,6 +29,10 @@ body{
 .deng-bottom_div{
     margin-bottom: 14px;
 }
+.avatar{
+    width: 45px;
+    height: 45px
+}
 .comment{
     margin: 10px 0;
 }
@@ -36,13 +40,23 @@ body{
     margin-bottom: 15px;
     border-bottom: solid 1px #efdddd;
 }
+.comment-sub{
+    margin-top: 15px;
+    margin-bottom: 29px;
+    border: solid 1px #fbe1e1;
+    padding-top: 18px;
+    border-radius: 20px;
+}
+.comment-sub .btn{
+    margin: 10px 0;
+}
 .btn-comment{
     float: right;
     margin-bottom: 10px;
 }
 
 .menu{
-    color: #999;
+    color: #333;
     margin-top:5px;
 }
 .menu .icon{
@@ -50,6 +64,34 @@ body{
     font-size: 15px;
     cursor:pointer;
 }
+
+.menu .comment-icon{
+    font-size: 15px;
+    cursor:pointer;
+}
+.menu .comment-icon:hover{
+    color: #499ef3;
+}
+.menu .active{
+    color: #499ef3;
+}
 .menu .icon:hover{
     color: #499ef3;
+}
+.question-title{
+    margin-top:29px;
+}
+.question-tag{
+    margin-right: 10px;
+}
+
+.question-related{
+    line-height: 20px;
+    font-size: 17px;
+    margin-left: 0;
+    list-style: none;
+    padding-left: 0;
+}
+.question-related li{
+    margin-top:6px;
 }
