@@ -27,7 +27,7 @@ public class CustomizeErrorController implements ErrorController {
             model.addAttribute("message","请求错误,建议更换其他请求");
         }
         if(status.is5xxServerError()){
-            model.addAttribute("message","服务器估计被水淹了，我们快倒闭了吧。");
+            model.addAttribute("message","服务器估计被水淹了，公司快倒闭了。");
         }
         return  new ModelAndView("error");
     }

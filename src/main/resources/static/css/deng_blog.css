@@ -95,3 +95,18 @@ body{
 .question-related li{
     margin-top:6px;
 }
+.label-info .glyphicon{
+    margin-right: 5px;
+}
+.publish-tag_div{
+    display: none;
+}
+.publish-lable{
+    margin-right: 8px
+}
+.tag-button{
+    margin-top: 7px;
+}
+.tab-div{
+    margin-bottom: 10px;
+}

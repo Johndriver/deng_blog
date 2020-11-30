@@ -22,6 +22,9 @@
                 </form>
                 <ul class="nav navbar-nav navbar-right">
                     <li th:if="${session.user!=null}">
+                        <a href="/profile/replies">消息<span class="badge">42</span></a>
+                    </li>
+                    <li th:if="${session.user!=null}">
                         <a href="/publish">提问</a>
                     </li>
                     <li th:if="${session.user == null}">
