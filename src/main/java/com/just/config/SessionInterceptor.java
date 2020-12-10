@@ -3,6 +3,7 @@ package com.just.config;
 import com.just.mapper.UserMapper;
 import com.just.model.User;
 import com.just.model.UserExample;
+import com.just.sevice.NotificationService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,6 +18,8 @@ import java.util.List;
 public class SessionInterceptor implements HandlerInterceptor {
     @Resource
     private UserMapper userMapper;
+    @Resource
+    private NotificationService notificationService;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         Cookie[] cookies = request.getCookies();
@@ -28,7 +31,9 @@ public class SessionInterceptor implements HandlerInterceptor {
                     example.createCriteria().andTokenEqualTo(token);
                     List<User> users = userMapper.selectByExample(example);
                     if (users.size()!=0) {
+                        Long unreadCount = notificationService.unreadCount(users.get(0).getId());
                         request.getSession().setAttribute("user",users.get(0));
+                        request.getSession().setAttribute("unreadMessage",unreadCount);
                     }
                     break;
                 }

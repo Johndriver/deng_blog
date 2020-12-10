@@ -30,7 +30,15 @@ public class QuestionService {
     @Resource
     private QuestionMapper questionMapper;
 
-    public PaginationDTO<QuestionDTO> list(Integer page, Integer size) {
+    public PaginationDTO<QuestionDTO> list(String search,Integer page, Integer size) {
+        if (StringUtils.isNotBlank(search)) {
+            String[] tags = StringUtils.split(search, " ");
+            search = Arrays
+                    .stream(tags)
+                    .collect(Collectors.joining("|"));
+        }
+
+
         PaginationDTO<QuestionDTO> paginationDTO = new PaginationDTO<>();
 
 

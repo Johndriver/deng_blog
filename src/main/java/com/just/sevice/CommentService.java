@@ -88,6 +88,7 @@ public class CommentService {
             if(question==null){
                 throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
             }
+            comment.setCommentCount(0);
             commentMapper.insert(comment);
             //增加主评论的评论数。
             Comment parentComment = new Comment();
@@ -95,29 +96,33 @@ public class CommentService {
             parentComment.setCommentCount(1);
             commentExtMapper.incCommentCount(parentComment);
             //增加消息提醒
-            createNotification(comment,dbComment.getCommentator(),commentator.getName(),question.getTitle(), NotificationTypeEnum.REPLY_COMMENT);
+            createNotification(comment,dbComment.getCommentator(),commentator.getName(),question.getTitle(), NotificationTypeEnum.REPLY_COMMENT,dbComment.getParentId());
         }else{
             //回复问题
             Question question = questionMapper.selectByPrimaryKey(comment.getParentId());
             if(question==null){
                 throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
             }
+            comment.setCommentCount(0);
             commentMapper.insert(comment);
             question.setCommentCount(1);
             questionExtMapper.incCommentCount(question);
 
             //回复的消息提醒
-            createNotification(comment,question.getCreator(),commentator.getName(),question.getTitle(), NotificationTypeEnum.REPLY_QUESTION);
+            createNotification(comment,question.getCreator(),commentator.getName(),question.getTitle(), NotificationTypeEnum.REPLY_QUESTION,comment.getParentId());
         }
 
     }
 
-    private void createNotification(Comment comment, Long receiver, String notifierName,String outerTitle, NotificationTypeEnum notificationType) {
+    private void createNotification(Comment comment, Long receiver, String notifierName, String outerTitle, NotificationTypeEnum notificationType, Long outerId) {
+        if(receiver==comment.getCommentator()){
+            return;
+        }
         Notification notification = new Notification();
         long now = System.currentTimeMillis();
         notification.setGmtCreated(now);
         notification.setType(notificationType.getType());
-        notification.setOuterid(comment.getParentId());
+        notification.setOuterid(outerId);
         notification.setNotifier(comment.getCommentator());
         notification.setStatus(NotificationStatusEnum.UNREAD.getStatus());
         notification.setReceiver(receiver);

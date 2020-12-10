@@ -5,11 +5,16 @@
     <title th:text="${question.title}"></title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/bootstrap-theme.css">
+    <link rel="stylesheet" href="/css/editormd.preview.min.css">
+
     <script src="/js/jquery.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="/css/deng_blog.css">
     <script src="/js/moment.js"></script>
     <script src="/js/dengblog.js"></script>
+    <script src="/js/editormd.min.js"></script>
+    <script src="/js/lib/marked.min.js"></script>
+    <script src="/js/lib/prettify.min.js"></script>
 
 
 </head>
@@ -29,7 +34,16 @@
                 </span>
                 <hr>
                 <!--标签-->
-                <div th:text="${question.description}"></div>
+                <!--<div th:text="${question.description}"></div>-->
+                <div id="question-view">
+                    <textarea style="display: none" th:text="${question.description}"></textarea>
+                </div>
+                <script type="text/javascript">
+                    $(function() {
+                        var testView = editormd.markdownToHTML("question-view", {
+                        });
+                    });
+                </script>
                 <hr>
                 <span class="label label-info question-tag" th:each="tag:${question.tag.split(',')}">
                     <span class="label label-info" th:text="${tag}"></span>
@@ -96,12 +110,13 @@
                 <div class="media">
                     <div class="media-left">
                         <a href="#">
-                            <img class="media-object img-rounded avatar" th:src="${question.user.avatarUrl}">
+                            <img class="media-object img-rounded avatar"
+                                 th:src="${session.user!=null?question.user.avatarUrl:'/images/default-avatar.png'}">
                         </a>
                     </div>
                     <div class="media-body">
                         <h6 class="media-heading">
-                            <span th:text="${question.user.name}"></span>
+                            <span th:text="${session.user!=null?question.user.name:'匿名用户'}"></span>
                         </h6>
                     </div>
                 </div>
@@ -121,7 +136,8 @@
                 <div class="media">
                     <div class="media-left">
                         <a href="#">
-                            <img class="media-object img-circle" th:src="${question.user.avatarUrl}"
+                            <img class="media-object img-circle"
+                                 th:src="${question.user.avatarUrl}"
                                  style="width: 45px;height: 45px">
                         </a>
                     </div>
