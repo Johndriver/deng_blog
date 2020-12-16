@@ -110,3 +110,7 @@ body{
 .tab-div{
     margin-bottom: 10px;
 }
+.footer{
+    padding :10px 25%;
+    color: #666;
+}

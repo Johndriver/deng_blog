@@ -25,6 +25,7 @@ public class IndexController {
         User user = (User)request.getSession().getAttribute("user");
         PaginationDTO pagination = questionService.list(search,page,size);
         model.addAttribute("pagination",pagination);
+        model.addAttribute("search",search);
         return "index";
     }
 }

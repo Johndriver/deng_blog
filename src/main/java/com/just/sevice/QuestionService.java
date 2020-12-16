@@ -2,6 +2,7 @@ package com.just.sevice;
 
 import com.just.dto.PaginationDTO;
 import com.just.dto.QuestionDTO;
+import com.just.dto.QuestionQueryDTO;
 import com.just.exception.CustomizeErrorCode;
 import com.just.exception.CustomizeException;
 import com.just.mapper.QuestionExtMapper;
@@ -42,7 +43,9 @@ public class QuestionService {
         PaginationDTO<QuestionDTO> paginationDTO = new PaginationDTO<>();
 
 
-        Integer totalCount = (int)questionMapper.countByExample(new QuestionExample());
+        QuestionQueryDTO questionQueryDTO = new QuestionQueryDTO();
+        questionQueryDTO.setSearch(search);
+        Integer totalCount = questionExtMapper.countBySearch(questionQueryDTO);
         paginationDTO.setPagination(totalCount,page,size);
         if(page<1){
             page = 1;
@@ -53,7 +56,9 @@ public class QuestionService {
         Integer offSize = size*(page-1);
         QuestionExample questionExample= new QuestionExample();
         questionExample.setOrderByClause("gmt_create desc");
-        List<Question> questions = questionMapper.selectByExampleWithBLOBsWithRowbounds(questionExample, new RowBounds(offSize, size));
+        questionQueryDTO.setPage(offSize);
+        questionQueryDTO.setSize(size);
+        List<Question> questions = questionExtMapper.selectBySearch(questionQueryDTO);
         List<QuestionDTO> list=new ArrayList<>();
 
         for (Question question : questions) {
